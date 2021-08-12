@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MainWindowViewModel.vm.cs" />
+    <GrossumVwMdl Include="MainWindowViewModel.vm.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GrossumRed" Version="0.0.1-a17" />
+  </ItemGroup>
+
+</Project>

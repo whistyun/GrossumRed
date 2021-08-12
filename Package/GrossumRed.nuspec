@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata minClientVersion="2.5">
+    <id>GrossumRed</id>
+    <version>0.0.1</version>
+    <authors>whistyun</authors>
+    <owners>whistyun</owners>
+    <projectUrl>https://github.com/whistyun/GrossumRed</projectUrl>
+    <copyright>Copyright © 2021 whistyun</copyright>
+    <description>GrossumRed generates csharp code which inherits INotifyPropertyChanged from POCO.</description>
+    <tags>ViewModel generator</tags>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+</package>

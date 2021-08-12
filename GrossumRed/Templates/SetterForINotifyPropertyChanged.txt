@@ -1,0 +1,15 @@
+﻿set {
+    if(Object.ReferenceEquals($f, value)) return;
+    
+    if(Object.ReferenceEquals($f, null) || !$f.Equals(value)) 
+    {
+        $f = value;
+        
+        if(PropertyChanged!=null)
+        {
+            PropertyChanged.Invoke(
+                this,
+                new System.ComponentModel.PropertyChangedEventArgs("$n"));
+        }
+    }
+}

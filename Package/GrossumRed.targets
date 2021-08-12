@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    This file is based on Pegasus.targets of otac0n/Pegasus (https://github.com/otac0n/Pegasus/).
+    Pegasus.targets is licensed under the MIT license. 
+  -->
+  <ItemGroup>
+    <AvailableItemName Include="GrossumVwMdl" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)' == 'Core' ">
+    <GrossumRedAssemblyPath>$(MSBuildThisFileDirectory)netcoreapp2.0\GrossumRed.dll</GrossumRedAssemblyPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)' != 'Core' ">
+    <GrossumRedAssemblyPath>$(MSBuildThisFileDirectory)net45\GrossumRed.exe</GrossumRedAssemblyPath>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(GrossumRedAssemblyPath)" TaskName="CompileGrossumVwMdl" />
+
+  <Target Name="CleanGrossumVwMdls" DependsOnTargets="_UpdateGrossumVwMdlsMetatdata" BeforeTargets="Clean;CoreClean">
+    <Delete Files="@(GrossumVwMdl -> '%(OutputPath)')" ContinueOnError="true" />
+  </Target>
+
+  <Target Name="CompileGrossumVwMdls" DependsOnTargets="CoreCompileGrossumVwMdls" AfterTargets="MarkupCompilePass1" BeforeTargets="Compile;CoreCompile;Build;CoreBuild" Condition=" '@(GrossumVwMdl)' != '' ">
+    <ItemGroup>
+      <Compile Include="%(GrossumVwMdl.OutputPath)" />
+      <!-- The WinFX "GenerateTemporaryTargetAssembly" target requires generated code files be added here. -->
+      <_GeneratedCodeFiles Include="%(GrossumVwMdl.OutputPath)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="CoreCompileGrossumVwMdls" DependsOnTargets="_UpdateGrossumVwMdlsMetatdata" Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile);@(GrossumVwMdl)" Outputs="@(GrossumVwMdl -> '%(OutputPath)')">
+    <CompileGrossumVwMdl InputFiles="@(GrossumVwMdl -> '%(FullPath)')" OutputFiles="@(GrossumVwMdl -> '%(OutputPath)')" />
+    <Message Text="%(GrossumVwMdl.FullPath) -> %(GrossumVwMdl.OutputPath)" />
+  </Target>
+
+  <Target Name="_UpdateGrossumVwMdlsMetatdata">
+    <ItemGroup>
+      <GrossumVwMdl Condition=" '%(GrossumVwMdl.Link)' != '' And '%(GrossumVwMdl.OutputPath)' == '' ">
+        <OutputPath>$(IntermediateOutputPath)$([System.Text.RegularExpressions.Regex]::Replace(%(GrossumVwMdl.Link), '(?&lt;=^|\\|/)..(?=$|\\|/)', '__')).g.cs</OutputPath>
+      </GrossumVwMdl>
+      <GrossumVwMdl Condition=" '%(GrossumVwMdl.Link)' == '' And '%(GrossumVwMdl.OutputPath)' == '' ">
+        <OutputPath>$(IntermediateOutputPath)$([System.IO.Path]::GetFileName(%(GrossumVwMdl.Identity))).g.cs</OutputPath>
+      </GrossumVwMdl>
+    </ItemGroup>
+  </Target>
+
+</Project>

@@ -1,0 +1,3 @@
+﻿set {
+	this.RaiseAndSetIfChanged(ref $f, value)
+}
