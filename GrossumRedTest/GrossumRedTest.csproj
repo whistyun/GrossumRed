@@ -8,9 +8,11 @@
 
   <ItemGroup>
     <Compile Remove="Source\VmCls.vm.cs" />
+    <Compile Remove="Source\VmCls2.vm.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Source\VmCls2.vm.cs" />
     <EmbeddedResource Include="Source\VmCls.vm.cs" />
   </ItemGroup>
 

@@ -8,13 +8,25 @@ namespace Hoge
 #line default
 
 #line 5 "test"
-public class VmCls : System.Object
+public class VmCls2 : System.Object
     
 #line default
 ,System.ComponentModel.INotifyPropertyChanged{
 public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
 #line 7 "test"
+private double _innerField1;
+#line default
+
+#line 8 "test"
+private double _innerField2=12;
+#line default
+
+#line 9 "test"
+public event Action<string> ViewEvent;
+#line default
+
+#line 11 "test"
 public int PropertyA {
 #line default
 
@@ -36,12 +48,24 @@ set {
     }
 }
 
-#line 7 "test"
+#line 11 "test"
 }
 #line default
 private int  __PropertyA ;
+#line 11 "test"
 
-#line 8 "test"
+
+        void PrintText1(string txt)
+        {
+            int idx = 0;
+            foreach (var ch in txt)
+            {
+                Console.WriteLine($"char[{idx++}]: {ch}");
+            }
+        }
+#line default
+
+#line 22 "test"
 public string PropertyB {
 #line default
 
@@ -63,53 +87,20 @@ set {
     }
 }
 
-#line 8 "test"
+#line 22 "test"
 }
 #line default
 private string  __PropertyB ;
+#line 22 "test"
 
-#line 10 "test"
-class InnerVmCls
-        
-#line default
-:System.ComponentModel.INotifyPropertyChanged{
-public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
-#line 12 "test"
-public List<string> PropertyB {
+        void PrintText2(string txt) => PrintText1(txt);
 #line default
 
-get{ return __PropertyB; }
-
-set {
-    if(Object.ReferenceEquals(__PropertyB, value)) return;
-    
-    if(Object.ReferenceEquals(__PropertyB, null) || !__PropertyB.Equals(value)) 
-    {
-        __PropertyB = value;
-        
-        if(PropertyChanged!=null)
-        {
-            PropertyChanged.Invoke(
-                this,
-                new System.ComponentModel.PropertyChangedEventArgs("PropertyB"));
-        }
-    }
-}
-
-#line 12 "test"
-}
-#line default
-private List<string>  __PropertyB ;
-
-#line 13 "test"
+#line 25 "test"
 }
 #line default
 
-#line 14 "test"
-}
-#line default
-
-#line 15 "test"
+#line 26 "test"
 }
 #line default

@@ -1,0 +1,45 @@
+@namespace GrossumRed.Parser
+@classname Skipper
+
+SkipperExpression -public -lexical =
+    SkipperExpressionChip? ";"
+
+SkipperBlock -public -lexical = 
+    SkipperBlockChip? "}"
+
+SkipperExpressionChip =
+    (
+        __                        /
+        chara                     /
+        string1                   /
+        string2                   /
+        string3                   /
+        comment                   /
+        bcomment                  /
+        "{" SkipperBlockChip? "}" /
+        [^;]
+    )+
+
+SkipperBlockChip =
+    (
+        __                        /
+        chara                     /
+        string1                   /
+        string2                   /
+        string3                   /
+        comment                   /
+        bcomment                  /
+        "{" SkipperBlockChip? "}" /
+        [^}]
+    )+
+
+
+__ =  ( [ \t\r\n] / comment / bcomment )+    {""}
+
+chara   = "'\\''" / "'" . "'"                {""}
+string1 = "\"" ( '\\"' / (!'"' .) )* "\""    {""}
+string2 = "$\"" ( '\\"' / (!'"' .) )* "\""   {""}
+string3 = "@\"" ( '""' / (!'"' .) )* "\""    {""}
+
+comment = "//" [^\r\n]*                      {""}
+bcomment = "/*" (!"*/" .)* "*/"              {""}

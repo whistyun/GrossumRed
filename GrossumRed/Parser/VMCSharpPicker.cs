@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace GrossumRed.Parser
 {
+    delegate T Parser<T>(string subject, string fileName, out IList<LexicalElement> lexicalElements);
+
     class VMCSharpPicker
     {
         public string LeftSubject { private set; get; }
@@ -37,6 +39,15 @@ namespace GrossumRed.Parser
                 return false;
             }
 
+            var parser = new VMCSharp();
+            Comsume(parser.Parse);
+
+            return true;
+        }
+
+
+        public void Comsume<T>(Parser<T> parser)
+        {
             var offset = new CursorInfo(CurrentEnd);
 
             SyntaxInfo parsedResult;
@@ -44,8 +55,7 @@ namespace GrossumRed.Parser
             Cursor leftEnd;
             try
             {
-                var parser = new VMCSharp();
-                parsedResult = parser.Parse(LeftSubject, FileName, out var lexicals);
+                parsedResult = parser.Invoke(LeftSubject, FileName, out var lexicals) as SyntaxInfo;
                 leftStart = lexicals.Select(lex => lex.StartCursor).Min();
                 leftEnd = lexicals.Select(lex => lex.EndCursor).Max();
             }
@@ -71,8 +81,6 @@ namespace GrossumRed.Parser
 
             CurrentStart = leftStart + offset;
             CurrentEnd = leftEnd + offset;
-
-            return true;
         }
     }
 
@@ -128,7 +136,7 @@ namespace GrossumRed.Parser
                 c1.Location + c2.Location);
         }
 
-        public string ToString()
+        public override string ToString()
             => $"CursorInfo{{FileName:{FileName}, Line:{Line}, Column:{Column}, Location:{Location}}}";
     }
 }

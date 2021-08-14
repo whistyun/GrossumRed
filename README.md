@@ -1,4 +1,8 @@
-# GrossumRed
+<h1 align="center">
+<img src="icon.png" width="120"/> 
+<br/>
+GrossumRed
+</h1>
 
 GrossumRed generates csharp code which inherits INotifyPropertyChanged from POCO.
 

@@ -23,6 +23,15 @@ namespace GrossumRedTest
 
             Approvals.Verify(generated);
         }
+
+        [Test]
+        public void Test2()
+        {
+            var source = Utils.LoadText("VmCls2.vm.cs");
+            var generated = CompileManager.CompileString(source, "test", errInfo => { });
+
+            Approvals.Verify(generated);
+        }
     }
 
 

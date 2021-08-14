@@ -46,8 +46,20 @@ namespace GrossumRed
                     case SyntaxType.AttributeList:
                     case SyntaxType.Using:
                     case SyntaxType.Comment:
+                    case SyntaxType.DefField:
+                    case SyntaxType.DefEvent:
                         OutputParsedCode();
                         break;
+
+                    case SyntaxType.StartFieldWithInit:
+                    case SyntaxType.StartMethodWithLambda:
+                        ProcessBlockOrExpression(true);
+                        break;
+
+                    case SyntaxType.StartMethodWithBlock:
+                        ProcessBlockOrExpression(false);
+                        break;
+
 
                     case SyntaxType.Whitespace:
                         OutputWhitespace();
@@ -192,6 +204,22 @@ namespace GrossumRed
             Output.WriteLine($"private {pinf.StyleName} __{pinf.Name};");
         }
 
+        private void ProcessBlockOrExpression(bool isExpression)
+        {
+            Output.WriteLine($"#line {Picker.CurrentStart.Line} \"{Picker.FileName}\"");
+
+            Output.Write(Picker.CurrentText);
+
+            if (isExpression)
+                Picker.Comsume((new Skipper()).ParseSkipperExpression);
+            else
+                Picker.Comsume((new Skipper()).ParseSkipperBlock);
+
+            Output.Write(Picker.CurrentText);
+
+            Output.WriteLine();
+            Output.WriteLine("#line default");
+        }
 
         private void OutputWhitespace()
         {

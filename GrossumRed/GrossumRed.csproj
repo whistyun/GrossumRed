@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Parser\Skipper.peg" />
     <None Remove="Parser\VMCSharp.peg" />
+    <PegGrammar Include="Parser\Skipper.peg" />
     <PegGrammar Include="Parser\VMCSharp.peg" />
   </ItemGroup>
 

@@ -13,5 +13,11 @@
         Using,
         BlockEnd,
         Attribute,
+
+        StartFieldWithInit,
+        DefField,
+        DefEvent,
+        StartMethodWithLambda,
+        StartMethodWithBlock,
     }
 }
