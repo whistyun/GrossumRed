@@ -56,11 +56,18 @@ StartDefClass <ClassInfo> =
         new ClassInfo(lv.FirstOrDefault(), has.Count>0, type, inh.FirstOrDefault())
     }
 
-StartDefProp <PropInfo> =
-        lv:( alv:accessLv __ {alv} )? type:Type __? name:Name  __? "{"
+StartDefProp <PropInfo> = clbk:CallbackMark? pinf:PropertyMark
     {
-        new PropInfo(lv.FirstOrDefault(), type, name)
+        new PropInfo(pinf.AccessLevelLabel, pinf.StyleName, pinf.Name, clbk.FirstOrDefault())
     }
+    CallbackMark -lexical = clbk:(<string> "@callback"i __ mthdnm:Name __? {mthdnm})
+        {
+            clbk
+        }
+    PropertyMark <PropInfo> -lexical = lv:( alv:accessLv __ {alv} )? type:Type __? name:Name  __? "{"
+        {
+            new PropInfo(lv.FirstOrDefault(), type, name, null)
+        }
 
 DefField <SyntaxInfo> =
         lv:(alv:accessLv __ {alv})? ( "static"/"readonly"/"const" __ )? Type __? Name __? tail:("="/";") 

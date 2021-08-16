@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace GrossumRed.Parser
 {
@@ -19,6 +16,7 @@ namespace GrossumRed.Parser
         public CursorInfo CurrentStart { private set; get; }
         public CursorInfo CurrentEnd { private set; get; }
         public string CurrentText { private set; get; }
+        public IReadOnlyDictionary<string, LexicalInfo> Lexicals { private set; get; }
 
 
         public VMCSharpPicker(string subject, string fileName)
@@ -35,6 +33,7 @@ namespace GrossumRed.Parser
                 CurrentStart = default(CursorInfo);
                 CurrentEnd = default(CursorInfo);
                 CurrentText = null;
+                Lexicals = null;
 
                 return false;
             }
@@ -56,8 +55,20 @@ namespace GrossumRed.Parser
             try
             {
                 parsedResult = parser.Invoke(LeftSubject, FileName, out var lexicals) as SyntaxInfo;
-                leftStart = lexicals.Select(lex => lex.StartCursor).Min();
-                leftEnd = lexicals.Select(lex => lex.EndCursor).Max();
+                leftStart = lexicals.Select(lex => lex.StartCursor).OrderBy(cur => cur.Location).First();
+                leftEnd = lexicals.Select(lex => lex.EndCursor).OrderBy(cur => cur.Location).Last();
+
+                var lexicalDic = new Dictionary<string, LexicalInfo>();
+                foreach (var lex in lexicals)
+                {
+                    if (lexicalDic.TryGetValue(lex.Name, out var inf)
+                        && inf.Length > lex.EndCursor.Location - lex.StartCursor.Location)
+                        continue;
+
+                    lexicalDic[lex.Name] = new LexicalInfo(lex.Name, lex.StartCursor + offset, lex.EndCursor + offset);
+                }
+
+                Lexicals = lexicalDic;
             }
             catch (FormatException ex)
             {
@@ -84,7 +95,23 @@ namespace GrossumRed.Parser
         }
     }
 
-    struct CursorInfo
+    public struct LexicalInfo
+    {
+        public string Name { get; }
+        public CursorInfo Start { get; }
+        public CursorInfo End { get; }
+        public int Length => End.Location - Start.Location;
+
+        public LexicalInfo(string name, CursorInfo start, CursorInfo end)
+        {
+            Name = name;
+            Start = start;
+            End = end;
+        }
+    }
+
+    [Serializable]
+    public struct CursorInfo
     {
         public string FileName { get; }
         public int Line { get; }

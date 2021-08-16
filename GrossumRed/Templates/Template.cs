@@ -20,11 +20,13 @@ namespace GrossumRed.Templates
         }
 
 
-        public static string GetTextSetterINotifyPropertyChanged(string propNm, string fieldNm)
+        public static string GetTextSetterINotifyPropertyChanged(string propNm, string fieldNm, string callback)
         {
             var rawText = GetText("SetterForINotifyPropertyChanged.txt");
 
-            return rawText.Replace("$n", propNm).Replace("$f", fieldNm);
+            return rawText.Replace("$n", propNm)
+                          .Replace("$f", fieldNm)
+                          .Replace("$callback", callback);
         }
 
     }

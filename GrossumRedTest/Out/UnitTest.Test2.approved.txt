@@ -8,25 +8,43 @@ namespace Hoge
 #line default
 
 #line 5 "test"
+using System.Linq;
+#line default
+
+#line 7 "test"
 public class VmCls2 : System.Object
     
 #line default
 ,System.ComponentModel.INotifyPropertyChanged{
 public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
-#line 7 "test"
+#line 9 "test"
 private double _innerField1;
 #line default
 
-#line 8 "test"
-private double _innerField2=12;
-#line default
-
-#line 9 "test"
-public event Action<string> ViewEvent;
+#line 10 "test"
+private double _innerField2 = 12;
 #line default
 
 #line 11 "test"
+private double _innerField3 = System.Linq.Enumerable(0, 10).Select((itm, idx) =>
+        {
+            if (itm % 2 == 0 && idx % 4 == 0)
+            {
+                return itm;
+            }
+            else
+            {
+                return itm + idx;
+            }
+        });
+#line default
+
+#line 22 "test"
+public event Action<string> ViewEvent;
+#line default
+
+#line 24 "test"
 public int PropertyA {
 #line default
 
@@ -44,15 +62,17 @@ set {
             PropertyChanged.Invoke(
                 this,
                 new System.ComponentModel.PropertyChangedEventArgs("PropertyA"));
+
+
         }
     }
 }
 
-#line 11 "test"
+#line 24 "test"
 }
 #line default
 private int  __PropertyA ;
-#line 11 "test"
+#line 24 "test"
 
 
         void PrintText1(string txt)
@@ -60,12 +80,17 @@ private int  __PropertyA ;
             int idx = 0;
             foreach (var ch in txt)
             {
-                Console.WriteLine($"char[{idx++}]: {ch}");
+                Console.WriteLine($"char[{idx++}]: \"{ch}\"\"");
             }
+            // }
+            /* } */
+            var ch1 = '}';
+            var txt1 = @"""}";
+            var txt2 = "}";
         }
 #line default
 
-#line 22 "test"
+#line 41 "test"
 public string PropertyB {
 #line default
 
@@ -83,24 +108,28 @@ set {
             PropertyChanged.Invoke(
                 this,
                 new System.ComponentModel.PropertyChangedEventArgs("PropertyB"));
+
+#line 40 "test"
+        PropertyBChanged();
+#line default
         }
     }
 }
 
-#line 22 "test"
+#line 41 "test"
 }
 #line default
 private string  __PropertyB ;
-#line 22 "test"
+#line 41 "test"
 
 
         void PrintText2(string txt) => PrintText1(txt);
 #line default
 
-#line 25 "test"
+#line 44 "test"
 }
 #line default
 
-#line 26 "test"
+#line 45 "test"
 }
 #line default

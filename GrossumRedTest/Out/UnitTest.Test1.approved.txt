@@ -32,6 +32,8 @@ set {
             PropertyChanged.Invoke(
                 this,
                 new System.ComponentModel.PropertyChangedEventArgs("PropertyA"));
+
+
         }
     }
 }
@@ -59,6 +61,8 @@ set {
             PropertyChanged.Invoke(
                 this,
                 new System.ComponentModel.PropertyChangedEventArgs("PropertyB"));
+
+
         }
     }
 }
@@ -93,6 +97,8 @@ set {
             PropertyChanged.Invoke(
                 this,
                 new System.ComponentModel.PropertyChangedEventArgs("PropertyB"));
+
+
         }
     }
 }

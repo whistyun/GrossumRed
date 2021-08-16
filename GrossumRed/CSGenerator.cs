@@ -139,10 +139,13 @@ namespace GrossumRed
 
         private void TreatProperty(PropInfo pinf)
         {
-            bool getterOutputed = false;
-            bool setterOutputed = false;
+            var getterOutputed = false;
+            var setterOutputed = false;
+            var callbackMark = pinf.Callback is null ?
+                                    default(LexicalInfo) :
+                                    Picker.Lexicals["CallbackMark"];
 
-            OutputParsedCode();
+            OutputParsedCode("PropertyMark");
 
             while (Picker.HasNext())
             {
@@ -187,8 +190,28 @@ namespace GrossumRed
                         else
                         {
                             var setter = (PropSetter)Picker.Current;
+
+                            var propNm = pinf.Name.Trim();
+                            var fieldNm = "__" + pinf.Name.Trim();
+                            var callback = pinf.Callback?.Trim() ?? "";
+
+                            if (callback != "" && !callback.EndsWith(");"))
+                            {
+                                if (callback.EndsWith(")"))
+                                    callback = callback + ";";
+                                else
+                                    callback = callback + "();";
+
+                                var indend = new String(' ', callbackMark.Start.Column - 1);
+
+                                callback =
+                                    $"#line {callbackMark.Start.Line} \"{Picker.FileName}\"\r\n" +
+                                    $"{indend}{callback}\r\n" +
+                                    $"#line default";
+                            }
+
                             Output.WriteLine(setter.AccessLevelLabel ?? "");
-                            Output.WriteLine(Template.GetTextSetterINotifyPropertyChanged(pinf.Name.Trim(), "__" + pinf.Name.Trim()));
+                            Output.WriteLine(Template.GetTextSetterINotifyPropertyChanged(propNm, fieldNm, callback));
 
                             setterOutputed = true;
                         }
@@ -232,12 +255,26 @@ namespace GrossumRed
             }
         }
 
-        private void OutputParsedCode()
+        private void OutputParsedCode(string lexName = null)
         {
-            Output.WriteLine($"#line {Picker.CurrentStart.Line} \"{Picker.FileName}\"");
+            int line;
+            string text;
+            if (lexName is null)
+            {
+                line = Picker.CurrentStart.Line;
+                text = Picker.CurrentText;
+            }
+            else
+            {
+                var lexical = Picker.Lexicals[lexName];
+                line = lexical.Start.Line;
+                text = Picker.CurrentText.Substring(
+                        lexical.Start.Location - Picker.CurrentStart.Location,
+                        lexical.Length);
+            }
 
-            Output.Write(Picker.CurrentText);
-
+            Output.WriteLine($"#line {line} \"{Picker.FileName}\"");
+            Output.Write(text);
             Output.WriteLine();
             Output.WriteLine("#line default");
         }
