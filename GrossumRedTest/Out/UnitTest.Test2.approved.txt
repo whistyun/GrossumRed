@@ -8,26 +8,26 @@ namespace Hoge
 #line default
 
 #line 5 "test"
-using System.Linq;
+    using System.Linq;
 #line default
 
 #line 7 "test"
-public class VmCls2 : System.Object
+    public class VmCls2 : System.Object
     
 #line default
 ,System.ComponentModel.INotifyPropertyChanged{
 public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
 #line 9 "test"
-private double _innerField1;
+        private double _innerField1;
 #line default
 
 #line 10 "test"
-private double _innerField2 = 12;
+        private double _innerField2 = 12;
 #line default
 
 #line 11 "test"
-private double _innerField3 = System.Linq.Enumerable(0, 10).Select((itm, idx) =>
+        private double _innerField3 = System.Linq.Enumerable(0, 10).Select((itm, idx) =>
         {
             if (itm % 2 == 0 && idx % 4 == 0)
             {
@@ -41,11 +41,11 @@ private double _innerField3 = System.Linq.Enumerable(0, 10).Select((itm, idx) =>
 #line default
 
 #line 22 "test"
-public event Action<string> ViewEvent;
+        public event Action<string> ViewEvent;
 #line default
 
 #line 24 "test"
-public int PropertyA {
+        public int PropertyA {
 #line default
 
 get{ return __PropertyA; }
@@ -69,12 +69,11 @@ set {
 }
 
 #line 24 "test"
-}
+ }
 #line default
 private int  __PropertyA ;
-#line 24 "test"
 
-
+#line 26 "test"
         void PrintText1(string txt)
         {
             int idx = 0;
@@ -91,7 +90,7 @@ private int  __PropertyA ;
 #line default
 
 #line 41 "test"
-public string PropertyB {
+        public string PropertyB {
 #line default
 
 get{ return __PropertyB; }
@@ -117,17 +116,16 @@ set {
 }
 
 #line 41 "test"
-}
+ }
 #line default
 private string  __PropertyB ;
-#line 41 "test"
 
-
+#line 43 "test"
         void PrintText2(string txt) => PrintText1(txt);
 #line default
 
 #line 44 "test"
-}
+    }
 #line default
 
 #line 45 "test"

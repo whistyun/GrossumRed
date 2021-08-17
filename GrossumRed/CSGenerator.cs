@@ -141,11 +141,17 @@ namespace GrossumRed
         {
             var getterOutputed = false;
             var setterOutputed = false;
-            var callbackMark = pinf.Callback is null ?
-                                    default(LexicalInfo) :
-                                    Picker.Lexicals["CallbackMark"];
+            var callbackMark = default(LexicalInfo);
 
-            OutputParsedCode("PropertyMark");
+            if (pinf.Callback is null)
+            {
+                OutputParsedCode();
+            }
+            else
+            {
+                callbackMark = Picker.Lexicals["CallbackMark"];
+                OutputParsedCode("PropertyMark");
+            }
 
             while (Picker.HasNext())
             {

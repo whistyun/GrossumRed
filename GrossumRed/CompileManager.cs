@@ -31,7 +31,7 @@ namespace GrossumRed
 
             if (generated != null)
             {
-                using var outStream = File.OpenWrite(outputFile);
+                using var outStream = new FileStream(outputFile, FileMode.Create);
                 using var outWriter = new StreamWriter(outStream, new UTF8Encoding(true));
                 outWriter.Write(generated);
             }

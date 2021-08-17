@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GrossumRed" Version="0.0.1-a17" />
+    <PackageReference Include="GrossumRed" Version="0.0.1-a25" />
   </ItemGroup>
 
 </Project>

@@ -8,14 +8,14 @@ namespace Hoge
 #line default
 
 #line 5 "test"
-public class VmCls : System.Object
+    public class VmCls : System.Object
     
 #line default
 ,System.ComponentModel.INotifyPropertyChanged{
 public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
 #line 7 "test"
-public int PropertyA {
+        public int PropertyA {
 #line default
 
 get{ return __PropertyA; }
@@ -39,12 +39,12 @@ set {
 }
 
 #line 7 "test"
-}
+ }
 #line default
 private int  __PropertyA ;
 
 #line 8 "test"
-public string PropertyB {
+        public string PropertyB {
 #line default
 
 get{ return __PropertyB; }
@@ -68,19 +68,19 @@ set {
 }
 
 #line 8 "test"
-}
+ }
 #line default
 private string  __PropertyB ;
 
 #line 10 "test"
-class InnerVmCls
+        class InnerVmCls
         
 #line default
 :System.ComponentModel.INotifyPropertyChanged{
 public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
 #line 12 "test"
-public List<string> PropertyB {
+            public List<string> PropertyB {
 #line default
 
 get{ return __PropertyB; }
@@ -104,16 +104,16 @@ set {
 }
 
 #line 12 "test"
-}
+ }
 #line default
 private List<string>  __PropertyB ;
 
 #line 13 "test"
-}
+        }
 #line default
 
 #line 14 "test"
-}
+    }
 #line default
 
 #line 15 "test"

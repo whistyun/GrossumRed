@@ -28,7 +28,11 @@
     }
 }
 
-VMCSharpPart <SyntaxInfo> -lexical = 
+VMCSharpSyntax <SyntaxInfo> -lexical = 
+    ( [ \t]* ln )+ {new SyntaxInfo(SyntaxType.Whitespace)} /
+    (<SyntaxInfo> [ \t]* part:VMCSharpPart {part})
+
+VMCSharpPart <SyntaxInfo> = 
     StartDefNamespace /
     StartDefClass /
     StartDefProp /
@@ -39,9 +43,9 @@ VMCSharpPart <SyntaxInfo> -lexical =
     DefEvent /
     DefField /
     DefMethod /
-    ( [ \t\r\n] )+           {new SyntaxInfo(SyntaxType.Whitespace)} /
     ( comment / bcomment )+  {new SyntaxInfo(SyntaxType.Comment)} /
     EoB
+
 
 StartDefNamespace <SyntaxInfo> =
         "namespace" __  type:Name __?  "{"
@@ -60,14 +64,15 @@ StartDefProp <PropInfo> = clbk:CallbackMark? pinf:PropertyMark
     {
         new PropInfo(pinf.AccessLevelLabel, pinf.StyleName, pinf.Name, clbk.FirstOrDefault())
     }
-    CallbackMark -lexical = clbk:(<string> "@callback"i __ mthdnm:Name __? {mthdnm})
+    CallbackMark -lexical = clbk:(<string> "@callback"i __ mthdnm:methodName [ \t]* ln {mthdnm})
         {
             clbk
         }
-    PropertyMark <PropInfo> -lexical = lv:( alv:accessLv __ {alv} )? type:Type __? name:Name  __? "{"
+    PropertyMark <PropInfo> -lexical = [ \t]* lv:( alv:accessLv __ {alv} )? type:Type __? name:Name  __? "{"
         {
             new PropInfo(lv.FirstOrDefault(), type, name, null)
         }
+    methodName = [a-zA-Z] [_a-zA-Z0-9]* ("<" Name ( "," __ Name )*  ">")? ( "(" exportedParameterList ");" )?
 
 DefField <SyntaxInfo> =
         lv:(alv:accessLv __ {alv})? ( "static"/"readonly"/"const" __ )? Type __? Name __? tail:("="/";") 
@@ -160,3 +165,5 @@ __ =  ( [ \t\r\n] / comment / bcomment )+
 
 comment = "//" [^\r\n]*
 bcomment = "/*" (!"*/" .)* "*/"
+
+ln = ("\r\n" / "\r" / "\n")

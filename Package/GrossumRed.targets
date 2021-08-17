@@ -21,7 +21,11 @@
     <Delete Files="@(GrossumVwMdl -> '%(OutputPath)')" ContinueOnError="true" />
   </Target>
 
-  <Target Name="CompileGrossumVwMdls" DependsOnTargets="CoreCompileGrossumVwMdls" AfterTargets="MarkupCompilePass1" BeforeTargets="Compile;CoreCompile;Build;CoreBuild" Condition=" '@(GrossumVwMdl)' != '' ">
+  <Target Name="CompileGrossumVwMdls" 
+          DependsOnTargets="CoreCompileGrossumVwMdls"
+		  AfterTargets="MarkupCompilePass1"
+		  BeforeTargets="GenerateTemporaryTargetAssembly;XamlPreCompile;Compile;CoreCompile;Build;CoreBuild"
+		  Condition=" '@(GrossumVwMdl)' != '' ">
     <ItemGroup>
       <Compile Include="%(GrossumVwMdl.OutputPath)" />
       <!-- The WinFX "GenerateTemporaryTargetAssembly" target requires generated code files be added here. -->

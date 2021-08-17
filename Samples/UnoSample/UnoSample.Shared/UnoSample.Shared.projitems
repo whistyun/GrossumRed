@@ -5,7 +5,7 @@
     <HasSharedItems>true</HasSharedItems>
     <SharedGUID>6279c845-92f8-4333-ab99-3d213163593c</SharedGUID>
   </PropertyGroup>
-  <Import Project="..\..\pack\grossumred\0.0.1-a17\build\GrossumRed.targets" />
+  <Import Project="..\..\pack\grossumred\0.0.1-a25\build\GrossumRed.targets" />
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>UnoSample</Import_RootNamespace>
   </PropertyGroup>
