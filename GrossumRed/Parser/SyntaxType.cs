@@ -19,5 +19,7 @@
         DefEvent,
         StartMethodWithLambda,
         StartMethodWithBlock,
+        PropGetterOrSetterWithLambda,
+        PropGetterOrSetterWithBlock,
     }
 }

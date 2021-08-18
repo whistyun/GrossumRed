@@ -1,0 +1,6 @@
+[
+  test(24,1) : error GRD0006: The accessor already has some code. Grossum Red cannot insert a code. If you won't treat this accessor by GrossumRed, add '@ignore' to the head of this property.,
+  test(29,1) : error GRD0006: The accessor already has some code. Grossum Red cannot insert a code. If you won't treat this accessor by GrossumRed, add '@ignore' to the head of this property.,
+  test(37,1) : error GRD0004: setter is duplicated,
+  test(39,1) : error GRD0003: getter is duplicated
+]

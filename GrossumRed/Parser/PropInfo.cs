@@ -16,15 +16,16 @@ namespace GrossumRed.Parser
         public string Name { get; }
 
         public string Callback { get; }
+        public bool Ignore { get; }
 
-
-        public PropInfo(string accessLvLbl, string styleNm, string propNm, string callback) : base(SyntaxType.StartProperty)
+        public PropInfo(string accessLvLbl, string styleNm, string propNm, string callback, bool ignore) : base(SyntaxType.StartProperty)
         {
             AccessLevelLabel = accessLvLbl;
             StyleName = styleNm;
             Name = propNm;
 
             Callback = callback;
+            Ignore = ignore;
         }
     }
 

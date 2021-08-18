@@ -126,6 +126,9 @@
   <data name="SetterDuplicated" xml:space="preserve">
     <value>GRD0004:setter is duplicated</value>
   </data>
+  <data name="UnexpectedAccessor" xml:space="preserve">
+    <value>GRD0006:The accessor already has some code. Grossum Red cannot insert a code. If you won't treat this accessor by GrossumRed, add '@ignore' to the head of this property.</value>
+  </data>
   <data name="UnexpectedBlockEnd" xml:space="preserve">
     <value>GRD0001:unexpected blockend</value>
   </data>

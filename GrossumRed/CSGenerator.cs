@@ -53,10 +53,12 @@ namespace GrossumRed
 
                     case SyntaxType.StartFieldWithInit:
                     case SyntaxType.StartMethodWithLambda:
+                    case SyntaxType.PropGetterOrSetterWithLambda:
                         ProcessBlockOrExpression(true);
                         break;
 
                     case SyntaxType.StartMethodWithBlock:
+                    case SyntaxType.PropGetterOrSetterWithBlock:
                         ProcessBlockOrExpression(false);
                         break;
 
@@ -139,6 +141,18 @@ namespace GrossumRed
 
         private void TreatProperty(PropInfo pinf)
         {
+            if (pinf.Ignore)
+            {
+                string CommentOutLabel(string text)
+                {
+                    var idx = text.IndexOf("@ignore", StringComparison.InvariantCultureIgnoreCase);
+                    return text.Insert(idx, "//");
+                }
+
+                ProcessBlockOrExpression(false, CommentOutLabel);
+                return;
+            }
+
             var getterOutputed = false;
             var setterOutputed = false;
             var callbackMark = default(LexicalInfo);
@@ -161,6 +175,17 @@ namespace GrossumRed
                     default:
                         var msg = String.Format(Message.UnexpectedSyntaxInfo, Picker.CurrentText[0]);
                         FireCompileError(msg);
+                        break;
+
+
+                    case SyntaxType.PropGetterOrSetterWithLambda:
+                        FireCompileError(Message.UnexpectedAccessor);
+                        Picker.Comsume((new Skipper()).ParseSkipperExpression);
+                        break;
+
+                    case SyntaxType.PropGetterOrSetterWithBlock:
+                        FireCompileError(Message.UnexpectedAccessor);
+                        Picker.Comsume((new Skipper()).ParseSkipperBlock);
                         break;
 
                     case SyntaxType.Comment:
@@ -234,10 +259,13 @@ namespace GrossumRed
         }
 
         private void ProcessBlockOrExpression(bool isExpression)
+            => ProcessBlockOrExpression(isExpression, s => s);
+
+        private void ProcessBlockOrExpression(bool isExpression, Func<string, string> textReplacer)
         {
             Output.WriteLine($"#line {Picker.CurrentStart.Line} \"{Picker.FileName}\"");
 
-            Output.Write(Picker.CurrentText);
+            Output.Write(textReplacer(Picker.CurrentText));
 
             if (isExpression)
                 Picker.Comsume((new Skipper()).ParseSkipperExpression);
@@ -249,6 +277,7 @@ namespace GrossumRed
             Output.WriteLine();
             Output.WriteLine("#line default");
         }
+
 
         private void OutputWhitespace()
         {

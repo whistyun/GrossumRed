@@ -124,10 +124,15 @@ private string  __PropertyB ;
         void PrintText2(string txt) => PrintText1(txt);
 #line default
 
-#line 44 "test"
+#line 45 "test"
+        //@ignore
+        public int PropertyC { set; get; }
+#line default
+
+#line 48 "test"
     }
 #line default
 
-#line 45 "test"
+#line 49 "test"
 }
 #line default

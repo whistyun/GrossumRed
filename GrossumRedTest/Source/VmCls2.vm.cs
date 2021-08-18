@@ -41,5 +41,9 @@ namespace Hoge
         public string PropertyB { get; set; }
 
         void PrintText2(string txt) => PrintText1(txt);
+
+        @ignore
+        public int PropertyC { set; get; }
+
     }
 }

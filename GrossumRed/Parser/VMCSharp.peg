@@ -38,6 +38,7 @@ VMCSharpPart <SyntaxInfo> =
     StartDefProp /
     PropGetter /
     PropSetter /
+    PropGetterOrSetterWithProc /
     UsingList /
     AttributeList /
     DefEvent /
@@ -60,17 +61,21 @@ StartDefClass <ClassInfo> =
         new ClassInfo(lv.FirstOrDefault(), has.Count>0, type, inh.FirstOrDefault())
     }
 
-StartDefProp <PropInfo> = clbk:CallbackMark? pinf:PropertyMark
+StartDefProp <PropInfo> = clbk:CallbackMark? ignore:IgnoreMark? pinf:PropertyMark
     {
-        new PropInfo(pinf.AccessLevelLabel, pinf.StyleName, pinf.Name, clbk.FirstOrDefault())
+        new PropInfo(
+                pinf.AccessLevelLabel, pinf.StyleName, pinf.Name, 
+                clbk.FirstOrDefault(),
+                ignore.Count!=0)
     }
+    IgnoreMark   -lexical = "@ignore" [ \t]* ln
     CallbackMark -lexical = clbk:(<string> "@callback"i __ mthdnm:methodName [ \t]* ln {mthdnm})
         {
             clbk
         }
     PropertyMark <PropInfo> -lexical = [ \t]* lv:( alv:accessLv __ {alv} )? type:Type __? name:Name  __? "{"
         {
-            new PropInfo(lv.FirstOrDefault(), type, name, null)
+            new PropInfo(lv.FirstOrDefault(), type, name, null, false)
         }
     methodName = [a-zA-Z] [_a-zA-Z0-9]* ("<" Name ( "," __ Name )*  ">")? ( "(" exportedParameterList ");" )?
 
@@ -109,6 +114,15 @@ PropSetter <SyntaxInfo> =
     {
         new PropSetter(lv.FirstOrDefault())
     }
+
+PropGetterOrSetterWithProc <SyntaxInfo> =
+        lv:(alv:accessLv __ {alv})? ("set"/"get") __ tail:("=>"/"{")
+    {
+        tail=="=>"? 
+            new SyntaxInfo(SyntaxType.PropGetterOrSetterWithLambda):
+            new SyntaxInfo(SyntaxType.PropGetterOrSetterWithBlock)
+    }
+
 
 UsingList <SyntaxInfo> =
         (useNamespace3 / useNamespace2 / useNamespace1)

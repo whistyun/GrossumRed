@@ -88,6 +88,15 @@ namespace GrossumRed {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GRD0006:The accessor already has some code. Grossum Red cannot insert a code. If you won&apos;t treat this accessor by GrossumRed, add &apos;@ignore&apos; to the head of this property..
+        /// </summary>
+        internal static string UnexpectedAccessor {
+            get {
+                return ResourceManager.GetString("UnexpectedAccessor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GRD0001:unexpected blockend.
         /// </summary>
         internal static string UnexpectedBlockEnd {
