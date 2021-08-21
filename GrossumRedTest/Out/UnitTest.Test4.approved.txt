@@ -1,0 +1,87 @@
+#line 1 "test"
+using System;
+#line default
+
+#line 3 "test"
+namespace Hoge
+{
+#line default
+
+#line 5 "test"
+    using System.Linq;
+#line default
+
+#line 6 "test"
+    delegate void Gamma();
+#line default
+
+#line 7 "test"
+    delegate void Delta(string hoge);
+#line default
+
+#line 9 "test"
+    public interface IVmCls
+    {
+        public int Property0 { get; set; }
+        public int Property1 { get; set; }
+
+        void A();
+    }
+#line default
+
+#line 17 "test"
+    public class VmCls2 : System.Object
+    
+#line default
+,System.ComponentModel.INotifyPropertyChanged{
+public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+#line 19 "test"
+        delegate void Alpha();
+#line default
+
+#line 21 "test"
+        delegate void Beta(string hoge);
+#line default
+
+#line 23 "test"
+        public int PropertyD
+        {
+#line default
+
+
+set {
+    if(Object.ReferenceEquals(__PropertyD, value)) return;
+    
+    if(Object.ReferenceEquals(__PropertyD, null) || !__PropertyD.Equals(value)) 
+    {
+        __PropertyD = value;
+        
+        if(PropertyChanged!=null)
+        {
+            PropertyChanged.Invoke(
+                this,
+                new System.ComponentModel.PropertyChangedEventArgs("PropertyD"));
+
+
+        }
+    }
+}
+
+
+
+get{ return __PropertyD; }
+
+#line 28 "test"
+        }
+#line default
+private int  __PropertyD
+;
+
+#line 29 "test"
+    }
+#line default
+
+#line 30 "test"
+}
+#line default

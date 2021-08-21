@@ -48,6 +48,15 @@ namespace GrossumRedTest
 
             Approvals.Verify(errors.AsString());
         }
+
+        [Test]
+        public void Test4()
+        {
+            var source = Utils.LoadText("VmCls4.vm.cs");
+            var generated = CompileManager.CompileString(source, "test", errInfo => { });
+
+            Approvals.Verify(generated);
+        }
     }
 
 
@@ -57,7 +66,7 @@ namespace GrossumRedTest
         public static string AsString<T>(this List<T> list)
             => AsString(list, elm => elm.ToString());
 
-        public static string AsString<T>(this List<T> list, Func<T, string> format )
+        public static string AsString<T>(this List<T> list, Func<T, string> format)
         {
             var buf = new StringBuilder();
             buf.AppendLine("[");

@@ -72,8 +72,7 @@ namespace GrossumRed.Parser
             }
             catch (FormatException ex)
             {
-                var cursor = ex.Data["cursor"] as Cursor;
-                if (cursor != null)
+                if (ex.Data["cursor"] is Cursor cursor)
                 {
                     var ex2 = new FormatException(ex.Message, ex);
                     ex2.Data["cursor"] = offset + cursor;

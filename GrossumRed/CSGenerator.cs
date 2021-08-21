@@ -48,6 +48,7 @@ namespace GrossumRed
                     case SyntaxType.Comment:
                     case SyntaxType.DefField:
                     case SyntaxType.DefEvent:
+                    case SyntaxType.DefDelegate:
                         OutputParsedCode();
                         break;
 
@@ -59,6 +60,7 @@ namespace GrossumRed
 
                     case SyntaxType.StartMethodWithBlock:
                     case SyntaxType.PropGetterOrSetterWithBlock:
+                    case SyntaxType.StartInterface:
                         ProcessBlockOrExpression(false);
                         break;
 

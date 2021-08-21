@@ -35,6 +35,7 @@ VMCSharpSyntax <SyntaxInfo> -lexical =
 VMCSharpPart <SyntaxInfo> = 
     StartDefNamespace /
     StartDefClass /
+    StartDefInterface /
     StartDefProp /
     PropGetter /
     PropSetter /
@@ -44,6 +45,8 @@ VMCSharpPart <SyntaxInfo> =
     DefEvent /
     DefField /
     DefMethod /
+    DefConstructor /
+    DefDelegate /
     ( comment / bcomment )+  {new SyntaxInfo(SyntaxType.Comment)} /
     EoB
 
@@ -52,6 +55,13 @@ StartDefNamespace <SyntaxInfo> =
         "namespace" __  type:Name __?  "{"
     {
         new SyntaxInfo(SyntaxType.StartNamespace)
+    }
+
+StartDefInterface <SyntaxInfo> =
+        lv:( alv:accessLv __ {alv} )? "interface" __  type:Name __? 
+        inh:(<IList<string>> ":" __? inhc:Name  inhi:( __? "," __? inhis:Name {inhis} )* { Union(inhc, inhi)} )? __? "{"
+    {
+        new SyntaxInfo(SyntaxType.StartInterface)
     }
 
 StartDefClass <ClassInfo> =
@@ -80,11 +90,18 @@ StartDefProp <PropInfo> = clbk:CallbackMark? ignore:IgnoreMark? pinf:PropertyMar
     methodName = [a-zA-Z] [_a-zA-Z0-9]* ("<" Name ( "," __ Name )*  ">")? ( "(" exportedParameterList ");" )?
 
 DefField <SyntaxInfo> =
-        lv:(alv:accessLv __ {alv})? ( "static"/"readonly"/"const" __ )? Type __? Name __? tail:("="/";") 
+        lv:(alv:accessLv __ {alv})? ( ("static"/"readonly"/"const") __ )* Type __? Name __? tail:("="/";") 
         {
             tail=="="? 
                 new SyntaxInfo(SyntaxType.StartFieldWithInit):
                 new SyntaxInfo(SyntaxType.DefField)
+        }
+
+DefDelegate <SyntaxInfo> =
+        lv:(alv:accessLv __ {alv})? ( ("static"/"readonly"/"const") __ )* "delegate" __ Type __? Name __? 
+        "(" exportedParameterList? ")" __? tail:(";")
+        {
+            new SyntaxInfo(SyntaxType.DefDelegate)
         }
 
 DefEvent <SyntaxInfo> =
@@ -94,13 +111,25 @@ DefEvent <SyntaxInfo> =
         }
 
 DefMethod <SyntaxInfo> =
-        lv:(alv:accessLv __ {alv})? ( "static"/"readonly"/"const" __ )? Type __? Name __? 
-        "(" plst:exportedParameterList ")" __? tail:("=>"/"{")
+        lv:(alv:accessLv __ {alv})? ( ("static"/"readonly"/"const"/"async") __ )* Type __? Name __? 
+        "(" exportedParameterList? ")" __? tail:("=>"/"{")
         {
             tail=="=>"? 
                 new SyntaxInfo(SyntaxType.StartMethodWithLambda):
                 new SyntaxInfo(SyntaxType.StartMethodWithBlock)
         }
+
+DefConstructor <SyntaxInfo> =
+        lv:(alv:accessLv __ {alv})? "~"? Name __? 
+        "(" plst:exportedParameterList? ")" __?
+        ( ":" __? ("this"/"base") __? "(" exportedParameterList? ")" __? )?
+        tail:("=>"/"{")
+        {
+            tail=="=>"? 
+                new SyntaxInfo(SyntaxType.StartMethodWithLambda):
+                new SyntaxInfo(SyntaxType.StartMethodWithBlock)
+        }
+
 
 
 PropGetter <SyntaxInfo> =

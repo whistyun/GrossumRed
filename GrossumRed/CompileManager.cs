@@ -50,11 +50,40 @@ namespace GrossumRed
             }
             catch (FormatException ex)
             {
-                var cursor = ex.Data["cursor"] as Cursor;
-                if (cursor != null && Regex.IsMatch(ex.Message, @"^PEG\d+:"))
+                if (!ex.Data.Contains("cursor"))
+                    throw;
+
+                string errCd;
+                string errMsg;
+
+                if (Regex.IsMatch(ex.Message, @"^PEG\d+:"))
                 {
                     var parts = ex.Message.Split(new[] { ':' }, 2);
-                    logError(new CompilerError(cursor.FileName ?? string.Empty, cursor.Line, cursor.Column, parts[0], parts[1]));
+                    errCd = parts[0];
+                    errMsg = parts[1];
+                }
+                else
+                {
+                    errCd = null;
+                    errMsg = ex.Message;
+                }
+
+
+                if (ex.Data["cursor"] is Cursor cursor)
+                {
+                    logError(new CompilerError(
+                        cursor.FileName ?? string.Empty,
+                        cursor.Line, cursor.Column,
+                        errCd, errMsg));
+                    return null;
+                }
+
+                if (ex.Data["cursor"] is CursorInfo cursorInf)
+                {
+                    logError(new CompilerError(
+                        cursorInf.FileName ?? string.Empty,
+                        cursorInf.Line, cursorInf.Column,
+                        errCd, errMsg));
                     return null;
                 }
 
