@@ -83,6 +83,10 @@ namespace Hoge
 }
 ```
 
+## NuGet
+
+https://www.nuget.org/packages/GrossumRed
+
 
 ## How to use
 
